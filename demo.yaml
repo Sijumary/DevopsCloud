@@ -1,0 +1,89 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftWebConsole
+  creationTimestamp: '2021-03-31T09:44:16Z'
+  generation: 2
+  labels:
+    app: django-ex
+  name: django-ex
+  namespace: mywebapp
+  resourceVersion: '44418'
+  selfLink: /apis/apps.openshift.io/v1/namespaces/mywebapp/deploymentconfigs/django-ex
+  uid: a8a42243-9205-11eb-bd60-080027fae06f
+spec:
+  replicas: 1
+  selector:
+    deploymentconfig: django-ex
+  strategy:
+    activeDeadlineSeconds: 21600
+    resources: {}
+    rollingParams:
+      intervalSeconds: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
+      timeoutSeconds: 600
+      updatePeriodSeconds: 1
+    type: Rolling
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: django-ex
+        deploymentconfig: django-ex
+    spec:
+      containers:
+        - image: >-
+            172.30.1.1:5000/mywebapp/django-ex@sha256:b8de5c06b4f92ec464774b4e229d35f48e5aa8a233c8c099020345870d03f965
+          imagePullPolicy: Always
+          name: django-ex
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+  test: false
+  triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+          - django-ex
+        from:
+          kind: ImageStreamTag
+          name: 'django-ex:latest'
+          namespace: mywebapp
+        lastTriggeredImage: >-
+          172.30.1.1:5000/mywebapp/django-ex@sha256:b8de5c06b4f92ec464774b4e229d35f48e5aa8a233c8c099020345870d03f965
+      type: ImageChange
+    - type: ConfigChange
+status:
+  availableReplicas: 1
+  conditions:
+    - lastTransitionTime: '2021-03-31T09:51:49Z'
+      lastUpdateTime: '2021-03-31T09:51:49Z'
+      message: Deployment config has minimum availability.
+      status: 'True'
+      type: Available
+    - lastTransitionTime: '2021-03-31T09:51:50Z'
+      lastUpdateTime: '2021-03-31T09:51:50Z'
+      message: replication controller "django-ex-1" successfully rolled out
+      reason: NewReplicationControllerAvailable
+      status: 'True'
+      type: Progressing
+  details:
+    causes:
+      - type: ConfigChange
+    message: config change
+  latestVersion: 1
+  observedGeneration: 2
+  readyReplicas: 1
+  replicas: 1
+  unavailableReplicas: 0
+  updatedReplicas: 1
